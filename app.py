@@ -19,13 +19,14 @@ app = FastAPI()
 
 class AgentRequest(BaseModel):
     message: str
+    session_id: str
 
 @app.post("/run_agent")
 async def run(request: AgentRequest):
-    logger.info(f"SERVER: /run_agent received with message: {request.message}")
+    logger.info(f"SERVER: /run_agent received for session: {request.session_id} message: {request.message}")
     def generate():
         # This calls the generator in main.py
-        for sentence in run_agent(request.message):
+        for sentence in run_agent(request.message, request.session_id):
             # Format as plain text or Server-Sent Events
             logger.info(f"SENTENCE STREAMED: {sentence}")
             yield sentence

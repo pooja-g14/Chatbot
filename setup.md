@@ -22,24 +22,19 @@ Follow these steps to set up the PostgreSQL database and table for the chatbot h
 Create a new database in PostgreSQL (e.g., using `psql` or PGAdmin):
 
 ```sql
-CREATE DATABASE git_chatbot;
+CREATE DATABASE chatbot_db;
 ```
 
 ## 2. Create the Table
 
-Run the following SQL statement in your database to create the `chat_messages` table:
+Run the following SQL statement in your database to create the `chat_sessions` table:
 
 ```sql
-CREATE TABLE IF NOT EXISTS chat_messages (
-    id SERIAL PRIMARY KEY,
-    session_id VARCHAR(255) NOT NULL DEFAULT 'default',
-    role VARCHAR(50) NOT NULL,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS chat_sessions (
+    session_id UUID PRIMARY KEY,
+    history JSONB NOT NULL DEFAULT '[]'::jsonb,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
--- Index session_id for faster history lookup
-CREATE INDEX IF NOT EXISTS idx_chat_messages_session_id ON chat_messages(session_id);
 ```
 
 ## 3. Environment Configuration
@@ -47,6 +42,6 @@ CREATE INDEX IF NOT EXISTS idx_chat_messages_session_id ON chat_messages(session
 Add the connection URI to your `.env` file:
 
 ```env
-DATABASE_URL=postgresql://username:password@localhost:5432/git_chatbot
+DATABASE_URL=postgresql://username:password@localhost:5432/chatbot_db
 GEMINI_API_KEY=your_gemini_api_key_here
 ```

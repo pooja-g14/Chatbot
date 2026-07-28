@@ -111,6 +111,21 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
+        // Get or generate session ID
+        let sessionId = sessionStorage.getItem('chat_session_id');
+        if (!sessionId) {
+            try {
+                sessionId = crypto.randomUUID();
+            } catch (e) {
+                // Fallback simple UUID generator if crypto.randomUUID is not available
+                sessionId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+            sessionStorage.setItem('chat_session_id', sessionId);
+        }
+
         async function handleSend() {
             const textInput = document.getElementById('userInput');
             const text = textInput.value.trim();
@@ -130,7 +145,7 @@
                 const response = await fetch('/run_agent', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
+                    body: JSON.stringify({ message: text, session_id: sessionId })
                 });
 
                 const reader = response.body.getReader();
