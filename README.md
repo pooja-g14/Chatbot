@@ -1,6 +1,6 @@
 # Chatbot
 
 ## Text-to-text chatbot
-- Open source LLM
+- Gemini (Free Tier)
 - Track history using PostgreSQL
 - HTML for simple frontend

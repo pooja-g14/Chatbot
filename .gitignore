@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+**/__pycache__/
+logs/
+venv/
+.DS_Store
+venvt/
+.cursorignore
+.trae/

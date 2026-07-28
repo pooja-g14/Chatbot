@@ -1,0 +1,5 @@
+fastapi
+python-dotenv
+google-genai
+uvicorn
+psycopg[binary,pool]
