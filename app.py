@@ -1,19 +1,12 @@
 from fastapi import FastAPI
-from main import run_agent
+from src.main import run_agent
 from fastapi.responses import StreamingResponse, HTMLResponse
 from dotenv import load_dotenv
 from pydantic import BaseModel
 load_dotenv()
 import uvicorn
 
-import logging
-
-logging.basicConfig(
-    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
-    level=logging.INFO
-)
-
-logger = logging.getLogger(__name__)
+from logger import logger
 
 app = FastAPI()
 
@@ -35,7 +28,7 @@ async def run(request: AgentRequest):
 
 @app.get("/", response_class=HTMLResponse)
 async def index():
-    with open("index.html", "r", encoding="utf-8") as f:
+    with open("static/index.html", "r", encoding="utf-8") as f:
         return f.read()
 
 if __name__ == "__main__":
